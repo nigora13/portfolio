@@ -1,0 +1,206 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Нигора · автоматизация для экспертов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --ground: #FAF7FB; --surface: #FFFDFE; --ink: #2A2333; --ink-2: #4D4457; --muted: #6F6578;
+    --line: #E6DEEC; --violet: #7A3FA0; --violet-deep: #5E2E7E; --violet-soft: #F0E6F6;
+    --teal: #1F8A8A; --teal-dark: #176E6E; --teal-soft: #E3F2F1;
+    --btn-bg: #5AD0D0; --btn-bg-hover: #45C2C2; --btn-ink: #0E2E2E;
+    --f-display: "Prata", "Georgia", serif; --f-body: "Golos Text", "Segoe UI", system-ui, sans-serif; --measure: 62ch;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --ground: #1A1520; --surface: #241D2C; --ink: #F1EBF5; --ink-2: #CFC5D8; --muted: #A69BB1;
+    --line: #392F44; --violet: #B98BD9; --violet-deep: #D3B1EA; --violet-soft: #2E2338;
+    --teal: #4FB8B8; --teal-dark: #6ACACA; --teal-soft: #1E3232;
+    --btn-bg: #6BDADA; --btn-bg-hover: #58CECE; --btn-ink: #0E2E2E; } }
+  :root[data-theme="dark"] {
+    --ground: #1A1520; --surface: #241D2C; --ink: #F1EBF5; --ink-2: #CFC5D8; --muted: #A69BB1;
+    --line: #392F44; --violet: #B98BD9; --violet-deep: #D3B1EA; --violet-soft: #2E2338;
+    --teal: #4FB8B8; --teal-dark: #6ACACA; --teal-soft: #1E3232;
+    --btn-bg: #6BDADA; --btn-bg-hover: #58CECE; --btn-ink: #0E2E2E; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: var(--f-body); font-size: 1.0625rem; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: var(--teal-dark); }
+  a:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+  .wrap { max-width: 72rem; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; }
+  .brand { font-family: var(--f-display); font-size: 1.25rem; color: var(--violet); text-decoration: none; }
+  .top-cta { font-size: 0.9375rem; font-weight: 600; color: var(--teal-dark); text-decoration: none; border-bottom: 1px solid var(--teal); }
+  .hero { padding: clamp(2.5rem, 7vw, 5rem) 0 clamp(2rem, 5vw, 4rem); display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: 3rem; align-items: center; }
+  .eyebrow { font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--violet); margin: 0 0 1rem; }
+  h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(2rem, 5vw, 3.1rem); line-height: 1.12; margin: 0 0 1.25rem; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--violet); }
+  .lede { font-size: 1.1875rem; color: var(--ink-2); max-width: var(--measure); margin: 0 0 1.75rem; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; align-items: center; }
+  .btn { display: inline-flex; align-items: center; gap: 0.6rem; background: var(--btn-bg); color: var(--btn-ink); font-weight: 600; padding: 0.95rem 1.5rem; border-radius: 999px; text-decoration: none; transition: transform 120ms, background 120ms; }
+  .btn:hover { background: var(--btn-bg-hover); transform: translateY(-1px); }
+  .btn svg { width: 1.1em; height: 1.1em; fill: currentColor; }
+  .cta-note { font-size: 0.9375rem; color: var(--muted); }
+  .facts { background: var(--violet-soft); border-radius: 20px; padding: 1.5rem 1.75rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .facts .n { font-family: var(--f-display); font-size: 2.25rem; line-height: 1; color: var(--violet-deep); font-variant-numeric: tabular-nums; }
+  .facts .l { font-size: 0.875rem; color: var(--ink-2); margin-top: 0.3rem; }
+  section { padding: clamp(2.5rem, 6vw, 4.5rem) 0; border-top: 1px solid var(--line); }
+  h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.6rem, 3.2vw, 2.2rem); line-height: 1.2; margin: 0 0 0.75rem; text-wrap: balance; }
+  .sub { color: var(--muted); max-width: var(--measure); margin: 0 0 2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1rem; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem 1.4rem; display: flex; flex-direction: column; gap: 0.4rem; }
+  .card h3 { font-family: var(--f-body); font-size: 1.0625rem; font-weight: 700; margin: 0; }
+  .card p { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+  .tag { align-self: flex-start; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-dark); background: var(--teal-soft); padding: 0.2rem 0.6rem; border-radius: 999px; margin-bottom: 0.4rem; }
+  /* cases */
+  .cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1.25rem; }
+  .case { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+  .shot { aspect-ratio: 4 / 3; background: linear-gradient(160deg, var(--violet-soft), var(--teal-soft)); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 0.8125rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .case .body { padding: 1.2rem 1.35rem 1.4rem; display: flex; flex-direction: column; gap: 0.45rem; }
+  .case .for { font-size: 0.8125rem; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .case h3 { font-family: var(--f-body); font-size: 1.0625rem; font-weight: 700; margin: 0; }
+  .case p { margin: 0; color: var(--ink-2); font-size: 0.9375rem; }
+  .case .res { margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px solid var(--line); font-size: 0.9rem; }
+  .case .res b { color: var(--violet-deep); }
+  /* steps */
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: 0 1.25rem; padding: 1.25rem 0; border-top: 1px solid var(--line); }
+  .steps li:first-child { border-top: none; padding-top: 0; }
+  .steps .n { font-family: var(--f-display); font-size: 1.75rem; line-height: 1; color: var(--violet); }
+  .steps b { display: block; margin-bottom: 0.2rem; }
+  .steps p { margin: 0; color: var(--ink-2); max-width: var(--measure); }
+  /* price */
+  .price { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .pr { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 1.35rem 1.4rem; }
+  .pr .amt { font-family: var(--f-display); font-size: 1.6rem; color: var(--violet-deep); font-variant-numeric: tabular-nums; margin: 0.25rem 0 0.4rem; }
+  .pr h3 { font-family: var(--f-body); font-size: 1rem; font-weight: 700; margin: 0; }
+  .pr p { margin: 0; color: var(--ink-2); font-size: 0.9rem; }
+  .pnote { color: var(--muted); font-size: 0.9375rem; max-width: var(--measure); margin-top: 1.25rem; }
+  .final { background: var(--violet); color: #FFF; border-radius: 24px; padding: clamp(2rem, 5vw, 3.5rem); display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2rem; align-items: center; margin: 0 0 3rem; }
+  .final h2 { color: #FFF; margin-bottom: 0.5rem; }
+  .final p { margin: 0; color: rgba(255,255,255,0.86); max-width: var(--measure); }
+  .contacts { display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem; margin-top: 1.25rem; font-size: 0.9375rem; }
+  .contacts a { color: #FFF; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.5); }
+  footer { padding: 1.5rem 0 3rem; color: var(--muted); font-size: 0.85rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; justify-content: space-between; border-top: 1px solid var(--line); }
+  @media (max-width: 46rem) { .hero, .final { grid-template-columns: 1fr; gap: 2rem; } }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head><body>
+
+<div class="wrap">
+
+  <header class="top">
+    <a class="brand" href="#top">Нигора</a>
+    <a class="top-cta tg" href="https://t.me/vitamin2213">Написать в Telegram</a>
+  </header>
+
+  <section class="hero" id="top" style="border-top:none">
+    <div>
+      <p class="eyebrow">Автоматизация для экспертов и малого бизнеса</p>
+      <h1>Собираю <em>агентов, сайты и мини-приложения</em>, которые забирают рутину</h1>
+      <p class="lede">Помощник в Telegram, который ведёт вашу базу и отвечает клиентам. Сайт с записью. Калькулятор, который считает вместо вас. Личный кабинет, где всё в одном месте. Делаю на нейросетях — быстро и под вашу задачу, а не по шаблону.</p>
+      <div class="cta-row">
+        <a class="btn tg" href="https://t.me/vitamin2213"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.04 15.47 8.7 20.2c.48 0 .69-.21.94-.46l2.26-2.17 4.68 3.43c.86.47 1.47.22 1.7-.79l3.08-14.4c.28-1.25-.45-1.74-1.29-1.43L2.1 11.31c-1.22.47-1.2 1.15-.21 1.46l4.6 1.43 10.7-6.75c.5-.33.96-.15.58.18z"/></svg>Обсудить задачу</a>
+        <span class="cta-note">Отвечаю в тот же день. Первый разговор ни к чему не обязывает.</span>
+      </div>
+    </div>
+    <aside class="facts" aria-label="Коротко">
+      <div><div class="n">14</div><div class="l">продуктов собрано за три недели</div></div>
+      <div><div class="n">2</div><div class="l">ИИ-агента работают на сервере круглосуточно</div></div>
+      <div><div class="n">4</div><div class="l">инструмента для одного семейного бизнеса</div></div>
+      <div><div class="n">10</div><div class="l">экспертов уже обсуждают со мной свои задачи</div></div>
+    </aside>
+  </section>
+
+  <section>
+    <h2>Что делаю</h2>
+    <p class="sub">Не «сделаю сайт», а закрою задачу целиком: подумаю за вас, соберу, проверю на живых людях, отдам с инструкцией.</p>
+    <div class="grid">
+      <div class="card"><span class="tag">агенты</span><h3>ИИ-помощник в Telegram</h3><p>Помнит ваш бизнес, отвечает голосом и текстом, ведёт базы, пишет письма, напоминает. Живёт на сервере, не спит.</p></div>
+      <div class="card"><span class="tag">сайты</span><h3>Лендинги и сайты-визитки</h3><p>В вашем фирменном стиле, с кнопкой в мессенджер или формой записи. Открывается с телефона, без «сделано на конструкторе».</p></div>
+      <div class="card"><span class="tag">приложения</span><h3>Мини-приложения и кабинеты</h3><p>Калькуляторы, квизы, личные кабинеты с данными, которые синхронизируются между устройствами. Открываются в Telegram или в браузере.</p></div>
+      <div class="card"><span class="tag">боты</span><h3>Боты и воронки</h3><p>Квиз с результатом, курс-бот с открытием уроков по дням, приём заявок. Сценарий продумываю вместе с вами, код пишет нейросеть.</p></div>
+      <div class="card"><span class="tag">данные</span><h3>Базы и CRM</h3><p>Клиенты, партнёры, сделки — в одном месте, с фильтрами и историей. Агент сам заполняет из переписок.</p></div>
+      <div class="card"><span class="tag">контент</span><h3>Контент-конвейер</h3><p>Карусели, посты и сценарии в вашем голосе по вашей нише. Инструмент, который вы потом ведёте сами.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Что уже собрано</h2>
+    <p class="sub">Реальные продукты: для своей работы, для семейного бизнеса и для первых клиентов. Всё сделано в сентябре 2026.</p>
+    <div class="cases">
+
+      <div class="case"><div class="shot" data-shot="lina">скриншот: Лина в Telegram</div><div class="body"><span class="for">для себя · агент</span><h3>Лина — личный помощник в Telegram</h3><p>Ведёт базы блогеров и рекламодателей, пишет офферы, считает метрики, понимает голосовые и отвечает голосом. Помнит правила и не путает, кто владелец, а кто гость.</p><div class="res"><b>Результат:</b> за две недели — 10 диалогов с экспертами по ИИ-услугам, все письма и таблицы собраны агентом.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="boba">скриншот: Боба в Telegram</div><div class="body"><span class="for">для семейного бизнеса · агент под клиента</span><h3>Боба — агент для мастера по плитке</h3><p>Второй агент, поднятый через собственную «фабрику»: один агент разворачивает другого. Отдан мужу-плиточнику: считает сметы, ведёт учёт, готовит документы. Схема, которую можно повторить для любого клиента.</p><div class="res"><b>Результат:</b> у клиента свой помощник, доступ только у него, поддержка через меня.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="plitomer">скриншот: Плитомер</div><div class="body"><span class="for">для семейного бизнеса · мини-приложение</span><h3>Плитомер — квиз, который сам считает и пишет КП</h3><p>Заказчик отвечает на пять вопросов о ремонте, приложение считает стоимость, собирает коммерческое предложение и отправляет в WhatsApp мастеру. Без звонков «а сколько будет стоить».</p><div class="res"><b>Результат:</b> первичный расчёт делается без участия мастера.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="korzina">скриншот: Корзина санузла</div><div class="body"><span class="for">для семейного бизнеса · мини-приложение</span><h3>Корзина санузла — материалы под ключ</h3><p>Реальная корзина товаров из строительного магазина с фото и ценами, смета по площади. Клиент видит, из чего складывается сумма.</p><div class="res"><b>Результат:</b> смета вместо «примерно».</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="kabinet">скриншот: Мой кабинет</div><div class="body"><span class="for">для себя · платформа</span><h3>Мой кабинет — всё в одном месте</h3><p>Пять вкладок: сегодня, покупки, финансы, копилка, календарь. Данные хранятся на сервере и синхронизируются между телефоном и ноутбуком. Задачу можно передать агенту прямо из кабинета — он приносит результат в чат.</p><div class="res"><b>Результат:</b> заменил три отдельных приложения.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="calc">скриншот: Калькулятор рекламы</div><div class="body"><span class="for">для себя и брендов · инструмент</span><h3>Калькулятор рекламы</h3><p>CPV, CPM, CTR, CPC, стоимость заказа, ROAS и ROMI — вводишь цифры размещения, видишь, окупилось или нет. Понятно человеку, который эти буквы видит впервые.</p><div class="res"><b>Результат:</b> считаю отчёты брендам за минуту.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="landing">скриншот: лендинг</div><div class="body"><span class="for">для себя · сайт</span><h3>Лендинг услуги по рекламе у блогеров</h3><p>Собственная дизайн-система, калькулятор бюджета прямо на странице, чек-лист проверки блогера на накрутку, ответы на вопросы брендов. Кнопка открывает Telegram с уже написанным сообщением.</p><div class="res"><b>Результат:</b> страница, которая объясняет услугу без созвона.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="content">скриншот: Контент-завод</div><div class="body"><span class="for">для себя и экспертов · инструмент</span><h3>Контент-завод</h3><p>Выбираешь нишу, площадку, формат и тон — получаешь пост, сценарий, карусель или сторис. Внутри правила против «нейросетевого» стиля. Плюс пять готовых каруселей для брендов о рекламе у блогеров.</p><div class="res"><b>Результат:</b> контент на неделю за один вечер.</div></div></div>
+
+      <div class="case"><div class="shot" data-shot="quiz">в работе</div><div class="body"><span class="for">для клиента · бот · в работе</span><h3>Квиз-бот для психолога</h3><p>Кодовое слово в Instagram → тест в Telegram → персональный результат → приглашение написать. Первый проект по договорённости с экспертом, собирается сейчас.</p><div class="res"><b>Статус:</b> согласован, жду материалы от клиента.</div></div></div>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Как проходит работа</h2>
+    <p class="sub">По шагам, с документами. Вы всегда знаете, что сделано, что дальше и что вам передаётся.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><div><b>Разговор и паспорт проекта</b><p>Что болит, кто пользуется, что считаем результатом. Фиксирую письменно: что входит, что не входит, сроки, цена, сколько правок.</p></div></li>
+      <li><span class="n">2</span><div><b>Схема до кода</b><p>Сначала рисую, как это будет работать, и согласовываю с вами. Нейросеть пишет код только по утверждённой логике.</p></div></li>
+      <li><span class="n">3</span><div><b>Первая версия на ваших данных</b><p>Не «показываю макет», а даю потыкать. Ошибки на этом этапе — нормально, для этого он и нужен.</p></div></li>
+      <li><span class="n">4</span><div><b>Проверка на живых людях</b><p>Даю продукт двум-трём людям, которые не в теме, смотрю, где спотыкаются, и исправляю.</p></div></li>
+      <li><span class="n">5</span><div><b>Передача и инструкция</b><p>Всё регистрируется на вас: сервер, бот, домен. Отдаю с инструкцией для непогружённого человека и актом. Дальше — поддержка, если нужна.</p></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Сколько это стоит</h2>
+    <p class="sub">Пока набираю портфолио, цены ниже рыночных. Точную сумму называю после разговора — когда понятно, что именно собираем.</p>
+    <div class="price">
+      <div class="pr"><h3>Помощник в Telegram под ключ</h3><div class="amt">от 20 000 ₽</div><p>Сервер, бот, характер, память, подключение к вашим файлам. Плюс поддержка от 5 000 ₽ в месяц, если хотите, чтобы я оставалась рядом.</p></div>
+      <div class="pr"><h3>Сайт или лендинг</h3><div class="amt">от 20 000 ₽</div><p>Дизайн в вашем стиле, кнопка в мессенджер или форма, размещение. Домен и сервер оплачиваются отдельно и оформляются на вас.</p></div>
+      <div class="pr"><h3>Бот или мини-приложение</h3><div class="amt">от 20 000 ₽</div><p>Квиз, калькулятор, курс-бот, запись. Сложные сценарии с оплатой внутри — дороже, скажу после схемы.</p></div>
+    </div>
+    <p class="pnote">Оплата: половина до начала, половина после приёмки. Не обещаю продаж и заявок — отвечаю за то, что продукт работает так, как договорились, и передан вам с инструкцией.</p>
+  </section>
+
+  <div class="final">
+    <div>
+      <h2>Напишите, что хотите автоматизировать</h2>
+      <p>Двух строк достаточно: чем занимаетесь и что отнимает больше всего времени. Отвечу в тот же день и предложу, с чего начать.</p>
+      <div class="contacts">
+        <a class="tg" href="https://t.me/vitamin2213">Telegram @vitamin2213</a>
+        <a href="tel:+79965951922">+7 996 595-19-22</a>
+        <a href="mailto:nigora.azizova1396@mail.ru">nigora.azizova1396@mail.ru</a>
+      </div>
+    </div>
+    <a class="btn tg" href="https://t.me/vitamin2213">Написать в Telegram</a>
+  </div>
+
+  <footer>
+    <span>Нигора · автоматизация для экспертов и малого бизнеса · выпускница ЛАБС, поток 6</span>
+    <span>На этой странице нет форм и счётчиков: данные не собираются.</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var text = "Здравствуйте, Нигора! Хочу автоматизировать:\n\nЧем занимаюсь: \nЧто отнимает время: ";
+  var href = "https://t.me/vitamin2213?text=" + encodeURIComponent(text);
+  var links = document.querySelectorAll("a.tg");
+  for (var i = 0; i < links.length; i++) links[i].setAttribute("href", href);
+})();
+</script>
+
+</body></html>
